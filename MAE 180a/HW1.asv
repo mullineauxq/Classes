@@ -57,9 +57,4 @@ seconds = r2;
 
 
 %% q 4
-theta = 0:2*pi/1000:2*pi;
-r= 4./(1+cos(theta));
-polarplot(theta,r)
-
-
-
+theta = 0:0.1
