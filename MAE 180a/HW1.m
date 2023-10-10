@@ -9,7 +9,9 @@ norm(h);
 
 E = v*v'/2 - mu/norm(r); % Energy of the Orbit
 
-P =h*h'/mu ; % The orbit Parameter
+P =h*h'/mu; % The orbit Parameter
 
 e = cross(v,h)/mu - r/norm(r);
+
+
 
