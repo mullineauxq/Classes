@@ -9,10 +9,9 @@ norm(h);
 
 E = v*v'/2 - mu/norm(r); % Energy of the Orbit
 
-P =h*h'/mu; % The orbit Parameter
+P =h*h'/mu ; % The orbit Parameter
 
 e = cross(v,h)/mu - r/norm(r);
-
 
 
 norm(e) ; 
@@ -58,9 +57,4 @@ seconds = r2;
 
 
 %% q 4
-theta = 0:2*pi/1000:2*pi;
-r= 4./(1+cos(theta));
-polarplot(theta,r)
-
-
-
+theta = 0:0.1
