@@ -48,15 +48,22 @@ end
 
 
     %% Gain matching
+    i =sqrt(-1);
+
     syms s
-    K_s = limit(poly2sym(N,s)/poly2sym(D,s),s,i*f); % gain of CT TF at frquency f 
+
+    K_s = subs(poly2sym(N,s)/poly2sym(D,s),s,i*(f)); %calculate gain (complex)
+    K_s = abs(K_s); % complex magnitude calculation
 
     if nnz(f==poles)||nnz(f==zeros) % if the frequency is a pole or zero of the S domain TF, match a close frequency that isnt this one
         f = f+0.001; % slightly adjust f
-        K_s = limit(poly2sym(N,s)/poly2sym(D,s),s,i*(f)); % if gain is zero, gain match at a different frequency close to desired
+        K_s = subs(poly2sym(N,s)/poly2sym(D,s),s,i*(f)); % if gain is zero, gain match at a different frequency close to desired
+        K_s = abs(K_s); % complex magnitude calculation
     end
 
-    K_z = limit(Dz,z,exp(i*(f))); % gain of the matched Z domain tf at frequency f
+    
+    K_z = subs(Dz,z,exp(i*(f)));
+    K_z = abs(K_z);
 
     Keff = K_s/K_z; % effective multiplication factor to multiply D(z) by in order to gain match it against D(s) at frequency f
 

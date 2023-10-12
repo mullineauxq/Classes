@@ -1,7 +1,7 @@
 N = [1 1];
-D= [1 10 1];
-Ts = 0.1;
-f=  0;
+D= [1 10 0];
+Ts = 0.01;
+f=  5;
 
 % Takes coefficeint vector of numerator N and denominator D as a symbolic matrix with 2 rows. 1st row vector of the
 % numerator coefficients, second of the denominator coefficients.
@@ -40,16 +40,21 @@ Dz_matlab = c2d(tf(N,D),0.1)
 
 
 %% Gain matching 
+i = sqrt(-1); % needs to be overridden 
+
 syms s
-K_s = limit(poly2sym(N,s)/poly2sym(D,s),s,i*(f));
+K_s = subs(poly2sym(N,s)/poly2sym(D,s),s,i*(f)); %calculate gain (complex)
+K_s = abs(K_s); % complex magnitude calculation
 
 if nnz(f==poles)||nnz(f==zeros) % if the frequency is a pole or zero of the S domain TF, match a close frequency that isnt this one
     f = f+0.001; % slightly adjust f
     K_s = limit(poly2sym(N,s)/poly2sym(D,s),s,i*(f)); % if gain is zero, gain match at a different frequency close to desired 
 end
 
-K_z = limit(Dz,z,exp(i*(f)));
+K_z = subs(Dz,z,exp(i*(f)));
+K_z = abs(K_z);
 
 Keff = K_s/K_z;
 
-Dz = Dz*Keff
+Dz = Dz;
+Keff
