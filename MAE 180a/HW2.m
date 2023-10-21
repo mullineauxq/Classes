@@ -24,7 +24,7 @@ v2 = sqrt(2*(E+mu_e/r2));
 
     rp = a*(1-e);
 
-
+ve = sqrt(2*(E+mu_e/re));
 
 %% problem 2
 
