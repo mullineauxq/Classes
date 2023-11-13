@@ -11,3 +11,8 @@ n=norm(N);
 
 S = (norm(r2)-norm(r3))*r1+(norm(r3)-norm(r1))*r2+(norm(r1)-norm(r2))*r3;
 s = norm(S);
+
+e = s/d;
+P = n/d;
+
+
