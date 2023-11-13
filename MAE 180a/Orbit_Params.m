@@ -21,7 +21,7 @@ Params.e = e;
 
 k = [0 0 1];
 i = acos(h*k'/norm(h));
-Params.i = i ;
+Params.i = i*180/pi ;
 
  
 
@@ -32,7 +32,7 @@ OMEGA = acos(n*i_hat'/(norm(n)));
 if n(2) < 0 
     OMEGA = 2*pi-OMEGA; % condition for ascending node in the 3rd or 4th quadrant of the equatorial plane
 end
-Params.LAN = OMEGA ; 
+Params.LAN = OMEGA*180/pi ; 
 
 omega = acos(n*e'/(norm(n)*norm(e)));
 
@@ -40,7 +40,7 @@ if e(3)<0
     omega = 2*pi-omega; % CONDITION FOR PERIAPSIS DIRECTION BELOW EQUATORIAL PLANE (-Z)
 end
 
-Params.omega = omega;
+Params.omega = omega*180/pi;
 
 
 nu = acos(e*r'/(norm(e)*norm(r)));
@@ -49,6 +49,6 @@ if r*v' < 0
 nu = 2*pi-nu;
 end
 
-Params.anomaly = nu;
+Params.anomaly = nu*180/pi;
 
 end
