@@ -1,0 +1,23 @@
+numer = [.1];
+denom = [1 , .1, 0];
+
+numerz = [1 ,-1];
+denomz =  [1 0 0 0 0];
+zc = tf(numerz, denomz);
+
+g = tf(numer,denom);
+
+g_z = c2d(g,2,'zoh');
+g_z_zoh = c2d(g,2);
+g_z_manual = g_z*;
+
+
+
+
+
+
+
+
+
+
+

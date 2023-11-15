@@ -1,13 +1,15 @@
-% Define the system transfer function with time delay
+%% Define the system transfer function with time delay
 numerator = [.1];
 denominator = [ 1, .1]; 
 time_delay = 6; %  time delay in seconds
 
 g = tf(numerator, denominator);
 g_delayed = tf(numerator,denominator, 'InputDelay', time_delay);
+g_delayed_rational = pade(g_delayed,2);
 
+Ts_delayed = 3.4*g_delayed_rational/(1+3.4*g_delayed_rational);
 
-% Create a Bode plot
+%% Create a Bode plot
 figure(1);
 hold on
 bode(g);
@@ -18,19 +20,22 @@ legend("No delay","delayed 6s");
 hold off
 %% 
 
-d = tf([1 2.4 1.44],[1 0]); %% PID controller found using Zeigler Nichols
-d = d*0.8;
+d = tf([616.4 1568.4 999],[785 0]); %% PID controller found using Zeigler Nichols
 L = g*d ; %% Open loop transfer func
-L_delayed = g_delayed*d; 
-G = L/(1+L);
+L_delayed = g_delayed_rational*d; 
+
+Ts = L/(1+L); %% configure closed loop tf T(s)
+[numerT,denomT] = tfdata(Ts);
+
+T_delayed = tf(numerG,denomG,'InputDelay',6);
 
 figure(2)
 hold on
 bode(L)
-%%bode(L_delayed)
-title('Bode Plot of Forward Loop using Ziegler Nichols PID Ignoring Time Delay');
+bode(L_delayed)
+title('Bode Plot of Forward Loop using Ziegler Nichols PID');
 hold off
-%%legend("No delay","delayed 6s"); 
+legend("No delay","delayed 6s"); 
 
 %% 4a Plotting System response to sequential step inputs
 
@@ -49,12 +54,17 @@ end
 
 figure(3)
 
-lsim(G,u,t)
-ylabel('Temperature C')
 
-%% 4c - limiting control effort 
+[NUM,DEN] = tfdata(T_delayed);
+Num = NUM{:};
+Den = DEN{:};
 
-Q = d/(1+g*d);
+[A,B,C,D] = tf2ss(Num,Den);
 
-lsim(Q,u,t)
+T_delayed_ss = ss(A,B,C,D);
+lsim(T_delayed,u,t);
+ylabel('Temperature C');
+
+[Gm,Pm,Wcg,Wcp] = margin(T_delayed);
+
 
