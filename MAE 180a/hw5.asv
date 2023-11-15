@@ -12,7 +12,18 @@ n=norm(N);
 S = (norm(r2)-norm(r3))*r1+(norm(r3)-norm(r1))*r2+(norm(r1)-norm(r2))*r3;
 s = norm(S);
 
-e = s/d;
-P = n/d;
+L = sqrt(1/(d*n));
 
+v1 = L/norm(r1)*cross(D,r1)+L*S;
 
+h = cross(r1,v1);
+
+e =cross(v1,h)-r1/norm(r1);
+
+E = norm(v1)^2/2-1/2.12;
+
+a = -1/(2*E);
+
+P = a*(1-norm(e)^2);
+
+i= acosd()
