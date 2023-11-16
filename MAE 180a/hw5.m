@@ -27,3 +27,20 @@ a = -1/(2*E);
 P = a*(1-norm(e)^2);
 
 i= acosd(dot(h,[0,0,1])/norm(h));
+
+node = cross([0 0 1], h);
+
+omega = acosd(dot(node,e)/(norm(node)*norm(e)));
+OMEGA = acosd(dot(node,[1 0 0])/(norm(node)));
+
+nu_o1 = acosd(dot(e,r1)/(norm(e)*norm(r1)));
+
+
+%% question 2
+el = 40;
+az = 65;
+rho = .8*[-cosd(el)*cosd(az);cosd(el)*sind(az);sind(el)];
+
+vr = [-.07*cosd(40)*cosd(65)+.8*2.5*sind(40)*cosd(65)+0.8*cosd(40)*1.8*sind(65);
+    0.07*cosd(el)*sind(az)-0.8*2.5*sind(el)*sind(az)+0.8*cosd(el)*1.8*cosd(az);
+    0.07*sind(el)+0.8*2.5*cosd(el)];
