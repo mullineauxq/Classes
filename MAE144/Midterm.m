@@ -7,7 +7,6 @@ g = tf(numerator, denominator);
 g_delayed = tf(numerator,denominator, 'InputDelay', time_delay);
 g_delayed_rational = pade(g_delayed,2);
 
-Ts_delayed = 3.4*g_delayed_rational/(1+3.4*g_delayed_rational);
 
 %% Create a Bode plot
 figure(1);
@@ -20,14 +19,15 @@ legend("No delay","delayed 6s");
 hold off
 %% 
 
-d = tf([616.4 1568.4 999],[785 0]); %% PID controller found using Zeigler Nichols
+%%d = tf([ 4.94 2 0.20249],[1 0]); %% PID controller found using Zeigler
+%%Nichols (OLD using 2pi factor)
+
+d = tf([.786 2 1.274],[1 0]);
 L = g*d ; %% Open loop transfer func
-L_delayed = g_delayed_rational*d; 
+L_delayed = g_delayed*d; 
 
-Ts = L/(1+L); %% configure closed loop tf T(s)
+Ts = L_delayed/(1+L_delayed); %% configure closed loop tf T(s)
 [numerT,denomT] = tfdata(Ts);
-
-T_delayed = tf(numerG,denomG,'InputDelay',6);
 
 figure(2)
 hold on
@@ -55,16 +55,10 @@ end
 figure(3)
 
 
-[NUM,DEN] = tfdata(T_delayed);
-Num = NUM{:};
-Den = DEN{:};
-
-[A,B,C,D] = tf2ss(Num,Den);
-
-T_delayed_ss = ss(A,B,C,D);
-lsim(T_delayed,u,t);
+y = lsim(Ts,u,t);
 ylabel('Temperature C');
 
-[Gm,Pm,Wcg,Wcp] = margin(T_delayed);
+[Gm,Pm,Wcg,Wcp] = margin(L_delayed);
+
 
 
