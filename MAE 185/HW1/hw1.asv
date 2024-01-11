@@ -102,29 +102,74 @@ rectangle('Position',[-0.5 -0.5 1 1],'Curvature',[1 1],'LineStyle','none','FaceC
 % generall approach- loop through each u and v and subtract out the average
 % developed ubar and vbar values 
 
+%gif('dev_flow_fluctuations.gif')
+t_steps  = length(u);
 for i = 1:t_steps
     subplot(2,1,1)
-    u_fluctuate = squeeze(u(i,:,:)) u_bar;
-    pcolor(x,y,u_fluctuate);
+    % express fluctuating component of u as u value minus ubar mean
+    u_fluctuate_i = squeeze(u(i,:,:))- u_bar_mean;
+    pcolor(x,y,u_fluctuate_i);
     rectangle('Position',[-0.5 -0.5 1 1],'Curvature',[1 1],'LineStyle','none','FaceColor',[1 1 1]);
-    % add color scale limiting
-    caxis([-0.5 2])
-    title('u')
+    % add plot accessories
+    title('u fluctuation')
     xlabel('x')
     ylabel('y')
     axis equal tight
+    colorbar
     shading interp
 
     subplot(2,1,2);
-    pcolor(x,y,squeeze(v(i,:,:)));
+    v_fluctuate_i = squeeze(v(i,:,:))-v_bar_mean;
+    pcolor(x,y,v_fluctuate_i);
     rectangle('Position',[-0.5 -0.5 1 1],'Curvature',[1 1],'LineStyle','none','FaceColor',[1 1 1]);
-    caxis([-1 1]);
-    title('v')
+  
+    title('v fluctuation')
     xlabel('x')
     ylabel('y')
     axis equal tight
     shading interp
+    colorbar
     drawnow
 
    %gif
 end
+
+%% Part 5 - Plotting k, Turbulence kinetic energy 
+
+% to begin,create a 3D matrix containing all fluctuation u and v values, at
+% each position, in each time step y looping through each time step and
+% subtracting the mean velocities
+
+t_steps  = length(u);
+u_flux_sqd = zeros(size(u));
+v_flux_sqd = zeros(size(v));
+
+for j = 1:t_steps
+u_flux_sqd(j,:,:) = squeeze(u(j,:,:)) - u_bar_mean;
+v_flux_sqd(j,:,:) = squeeze(v(j,:,:)) - v_bar_mean;
+end
+
+% now, in an elementwise manner, square all velocities fluctuations
+
+u_flux_sqd = u_flux_sqd.^2;
+v_flux_sqd = v_flux_sqd.^2; 
+
+% now take the time mean of both u flux and v flux squared
+
+u_flux_sqd_mean = squeeze(mean(u_flux_sqd));
+v_flux_sqd_mean = squeeze(mean(v_flux_sqd));
+
+% define the array of valyes for turbulence KE k(x,y)
+k = = 1/2*(u_flux_sqd_mean+v_flux_sqd_mean);
+
+% now plot k over all x and y positions over the experiment in a color map
+
+figure(2)
+
+pcolor(x)
+
+
+
+
+
+
