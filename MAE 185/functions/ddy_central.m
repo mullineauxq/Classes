@@ -1,5 +1,14 @@
-function dfdy = ddy_central(f,dy)
-    
+function dfdy = ddy_central(f,dy,periodic)
+% pass the letter p into the periodicity field if you wish to activate
+% periodic behavior of central diff
+
+    arguments 
+    f 
+    dy
+    periodic char = 'n'
+    end
+
+
     % determine field size
     [nx,ny]     = size(f);
 
@@ -24,4 +33,19 @@ function dfdy = ddy_central(f,dy)
     for i=1:nx
         dfdy(i,j) = (3*f(i,j)-4*f(i,j-1)+f(i,j-2))/2/dy;
     end
+
+    if periodic == 'p' 
+        % assuming periodicity (bottom boudary)
+        j = 1;
+        for i=1:nx
+        dfdy(i,j) = (f(i,2)-f(i,end))/(2*dy);
+        end
+
+        % assuming periodicity (right boudary)
+        j = ny;
+        for i=1:nx
+        dfdy(i,j) = (f(i,1)-f(i,j-1))/(2*dy);
+        end
+    end
+
 end

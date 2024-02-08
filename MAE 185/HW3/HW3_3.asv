@@ -1,0 +1,39 @@
+%% Part 3: McCormack Advection 
+
+load('gotritons','T','xx','yy')
+
+dx = mean(diff(xx(:,1))); 
+
+dy = mean(diff(yy(1,:)));
+
+% define terms  
+c = [1;1];
+safety_factor = 2;
+dt_stable  = 1*(dy*dx/(dy+dx));
+dt_safe = dt_stable/safety_factor; 
+
+%% Compute time evolution with first order backwards diff until t=2
+T_new = T; 
+current_time = 0 ; % tracks the time with each iteration
+dT = zeros(size(T));
+T_bar = zeros(size(T));
+T_halftime = zeros(size(T)); % stores the mean value of T n+1 and T n in each loop
+while current_time<2
+
+    dTdx_fwd = ddx_fwd(T,dx,'p');
+    dTdy_fwd = ddy_fwd(T,dy,'p');
+
+    % first calculate the matrix of predicted T values T_bar for the next
+    % timestep
+    T_bar = T_new+dt_safe(-1*c(1)*dTdx_fwd-1*c(2)*dTdy_fwd);
+
+    % now calculate T new from Tbar
+    dTbar_dx_bwd = ddx_bwd(T,dx,'p');
+    dTbar_dy_bwd = ddy_bwd(T,dy,'p');
+    
+    T_new = dTbar
+
+
+
+
+end

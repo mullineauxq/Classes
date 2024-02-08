@@ -1,9 +1,9 @@
-function d = ddx_fwd(f,dx)
+function d = ddx_fwd(f,dx, periodicity)
 % ddx_fwd takes an ngrid matrix f and x-spacing of points 'dx' and computes the matrix of first order forward 1st differences 
 % ddx_fwd takes an n x m input matrix f and returns an n x m matrix d which
 % contains the numerical first order 1st derivative of f across the
 % columns. At the rightmost boundaries (n,:) a forward difference is taken
-% instead
+% instead. parameter 'P' may be passed to indicate periodicity
 
 % matlab works in meshgrid but we use ngrid, therefore n should be #
 % columns and m should be # of rows, we'll rename n to be nx and m to be ny
@@ -11,6 +11,11 @@ function d = ddx_fwd(f,dx)
 
 
 %/////////////////////////////Begin Function//////////////////////////////////////////
+arguments
+    f 
+    dx
+    periodicity = 'n'
+end
 
 [nx,ny] = size(f);
 d=zeros(size(f));
@@ -23,9 +28,14 @@ for j = 1:ny
     end
 end
 
-%finally loop through the rightmost column and perform first order backwards 1st difference 
-for  k = 1:ny 
-    d(nx,k) = (f(nx,k)-f(nx-1,k))/dx;
-end
 
+if periodicity == 'p'
+    for k= 1:ny
+        d(nx,k) = (f(1,k)-f(nx,k))/dx;
+    end
+else
+%finally loop through the rightmost column and perform first order backwards 1st difference 
+    for  k = 1:ny 
+        d(nx,k) = (f(nx,k)-f(nx-1,k))/dx;
+    end
 end
