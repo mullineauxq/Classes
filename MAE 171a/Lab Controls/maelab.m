@@ -670,7 +670,7 @@ if option==3,
           encoderpos=['Encoder ' num2str(encoderout) ' Pos'];
           data=readecp(sinfilename,'Time',encoderpos);
           t=data(:,1);
-          y=data(:,2);
+          y=data(:,2);5
           clear data
       end
       

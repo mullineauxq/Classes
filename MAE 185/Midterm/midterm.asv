@@ -1,0 +1,38 @@
+%% MIDTERM 2023
+%Quinn, 
+clear;
+clc;
+%% Generate nGrid, dx,dy
+x_coords = linspace(0,1*10^(-5),75); % array containing each grid x coordinate
+y_coords = linspace(0,8*10^(-6),80); % and y
+[xx,yy]  = ndgrid(x_coords,y_coords); % generates x and y ndgrid coordinates for plotting
+dx = mean(diff(xx(:,1))); % coul do analytically as well -\_(*_*)_/-
+dy = mean(diff(yy(1,:)));
+
+%% initialize initial Conditions - primitive variables
+% datum labeled X_previous will store the value of primitive variable X at
+% loop N in order to calulate X_next at loop number N+1
+
+% Air Properties - constants
+gamma = 1.4; 
+R = 287 ; % J/Kg*K
+T_0 = 288.1; %K
+
+% air properties - variable
+T_previous = T_0*ones(75,80); % initial temperature grid (K)
+a_previous = sqrt(gamma*R*T_previous);
+u_previous = ones(75,80); % initial x-velocity
+mu_previous = sutherland(T_last);
+
+
+
+function [mu] = sutherland(T)
+mu_0 = 1.735*10^(-5); % Ns/m^2
+
+% assume t_0 == 300k? unindicated
+T_0 = 288.15; 
+S_1 = 110.4;
+
+mu = mu_0*(T./T_0).^(3/2).*(T_0+S_1)./(T+S_1);
+end
+
