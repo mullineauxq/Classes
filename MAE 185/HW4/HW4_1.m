@@ -120,21 +120,20 @@ U(4,:,:)=Et;
 end
 
 function [rho,u,v,T,p,e,Et] = cons2prim(U,R,cv)
-rho = U(1,:,:);
+rho = squeeze(U(1,:,:));
 
-rho_u  = U(2,:,:);
+rho_u  = squeeze(U(2,:,:));
 u = rho_u./rho;
 
-rho_v = U(3,:,:);
+rho_v = squeeze(U(3,:,:));
 v = rho_v./rho;
 
-Et = U(4,:,:);
+Et = squeeze(U(4,:,:));
 e = Et./rho-(u.^2+v.^2)/2;
-T = e/cv; 
+T = squeeze(e/cv); 
 
 p = (rho*R).*T;
 end
-
 function [mu] = sutherland(T)
 mu_0 = 1.735*10^(-5); % Ns/m^2
 

@@ -23,7 +23,7 @@ end
             dfdy(k,1) = (f(k,1)-f(k,ny))/dy;
         end
     else
-        for  k = 1:ny 
+        for  k = 1:nx
             dfdy(k,1) = (f(k,2)-f(k,1))/dy; 
         end
     end

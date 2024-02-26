@@ -6,9 +6,9 @@ function dfdy = ddy_fwd(f,dy,periodicity)
     end
     % determine field size
     [nx,ny]     = size(f);
-
+    
     % allocate return field
-    dfdy        = zeros(nx,ny);
+    dfdy        = zeros(size(f));
     
     % forward difference
     for i=1:nx
