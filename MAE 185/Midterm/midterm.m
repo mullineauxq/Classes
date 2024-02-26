@@ -65,7 +65,7 @@ dFbardy_bwd = zeros(NS_size);
 
 %% Time Loop 
 
-gif('developing_flow_M4.gif')
+%%gif('developing_flow_M4.gif')
 for n = 1:1500
    %% begin each loop by updating the vectors E and F with the values provided by U_previous
     % To do so, collect primitive variables,assuming all BCs have been
@@ -386,7 +386,7 @@ for n = 1:1500
 
     sgtitle(sprintf('iteration Number %i',n));
     drawnow
-    gif
+   %% gif
     end
 
 end
